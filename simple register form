@@ -1,0 +1,110 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package registerform;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+/**
+ *
+ * @author Hirut Tarekegn
+ */
+public class RegisterForm extends JFrame {
+    JTextField tf;
+    JTextField tf1;
+    JTextField tf2;
+    JTextField tf3;
+    JButton bt;
+    JButton bt1;
+    JPanel pan;
+    RegisterForm(){
+         JPanel pan= new JPanel();
+
+
+        LayoutManager l1=new GridLayout(5,2,5,5);
+        JLabel lb=new JLabel("IDNO");
+        JTextField tf= new JTextField();
+         JLabel lb1=new JLabel("FirstName");
+        JTextField tf1= new JTextField();
+        JLabel lb2=new JLabel("LName");
+        JTextField tf2= new JTextField();
+       JLabel lb3=new JLabel("sex");
+        JTextField tf3= new JTextField();
+        JButton bt=new JButton("ADD");
+        JButton bt1=new JButton("Clear");
+        pan.setLayout(l1);
+         pan.add(lb);
+        pan.add(tf);
+       pan.add(lb1);
+          pan.add(tf1);
+           pan.add(lb2);
+           pan.add(tf2);
+            pan.add(lb3);
+            pan.add(tf3);
+            pan.add(bt);
+            pan.add(bt1);
+             add(pan);
+             bt.addActionListener(new  ActionListener  (){
+public void actionPerformed(ActionEvent  e) {
+    
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+    
+        System.out.println("driver loaded");
+        Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/samplebook","root","1234");
+        System.out.println("connection is created");
+        Statement st=con.createStatement();
+        System.out.println("statemente is created");
+       // String sql="insert into student ";
+        st.executeUpdate("insert into student values('"+tf.getText().trim()+"','"+tf1.getText().trim()+"','"+tf2.getText().trim()+"','"+tf3.getText().trim()+"')");
+       JOptionPane.showMessageDialog(null,"ADDED SUCCESFULLY");
+//while(rs.next()){
+        //    System.out.println(rs.getString(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3)+"\t"+rs.getString(4));
+       // }
+        con.close();
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(RegisterForm.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(RegisterForm.class.getName()).log(Level.SEVERE, null, ex);
+    }
+       
+}
+});
+
+    bt1.addActionListener(new  ActionListener  (){
+public void actionPerformed(ActionEvent  e) {
+tf.setText("");
+tf1.setText("");
+tf2.setText("");
+tf3.setText("");
+}
+});
+
+        
+        
+        
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        RegisterForm rf=new RegisterForm();
+          rf.setVisible(true);
+        rf.setLocationRelativeTo(null);
+        rf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        rf.setTitle("RegisterForm");
+        rf.setSize(300, 200);
+        
+        // TODO code application logic here
+    }
+    
+}
